@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🧠 DRL Visual Lab</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="bg-canvas-wrap"><canvas id="bg-canvas"></canvas></div>
+
+  <header>
+    <div class="logo">🧠 <span>DRL</span> Visual Lab</div>
+    <div class="tagline">Deep Reinforcement Learning · from first principles · in your browser</div>
+    <div class="pills">
+      <span class="pill rust">🦀 Rust/WASM</span>
+      <span class="pill web">🌐 Zero Install</span>
+      <span class="pill pages">📄 GitHub Pages</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- ── CONCEPT EXPLAINER ─────────────────────────────── -->
+    <section class="card" id="concept">
+      <h2>What is Deep Reinforcement Learning?</h2>
+      <div class="concept-grid">
+        <div class="concept-box">
+          <div class="concept-icon">🤖</div>
+          <h3>Agent</h3>
+          <p>Makes decisions based on observations from the environment.</p>
+        </div>
+        <div class="concept-arrow animate-pulse">⟶</div>
+        <div class="concept-box">
+          <div class="concept-icon">🌍</div>
+          <h3>Environment</h3>
+          <p>Responds with a new state and a reward signal.</p>
+        </div>
+        <div class="concept-arrow animate-pulse">⟶</div>
+        <div class="concept-box">
+          <div class="concept-icon">💎</div>
+          <h3>Reward</h3>
+          <p>Scalar feedback that guides the agent toward the goal.</p>
+        </div>
+        <div class="concept-arrow animate-pulse">⟶</div>
+        <div class="concept-box">
+          <div class="concept-icon">📈</div>
+          <h3>Policy</h3>
+          <p>Learned mapping from states to actions, improved over episodes.</p>
+        </div>
+      </div>
+      <div class="bellman">
+        <span class="eq-label">Bellman Equation</span>
+        <span class="eq">Q(s,a) = r + γ · max<sub>a'</sub> Q(s',a')</span>
+      </div>
+    </section>
+
+    <!-- ── CONTROLS ──────────────────────────────────────── -->
+    <section class="card" id="controls">
+      <h2>⚙️ Hyperparameters</h2>
+      <div class="controls-grid">
+        <label>Learning Rate α
+          <input type="range" id="lr" min="0.001" max="0.5" step="0.001" value="0.1" />
+          <span class="val" id="lr-val">0.100</span>
+        </label>
+        <label>Discount γ
+          <input type="range" id="gamma" min="0.5" max="0.999" step="0.001" value="0.95" />
+          <span class="val" id="gamma-val">0.950</span>
+        </label>
+        <label>ε Start
+          <input type="range" id="eps-start" min="0.1" max="1.0" step="0.01" value="1.0" />
+          <span class="val" id="eps-start-val">1.00</span>
+        </label>
+        <label>ε Decay
+          <input type="range" id="eps-decay" min="0.9" max="0.999" step="0.001" value="0.97" />
+          <span class="val" id="eps-decay-val">0.970</span>
+        </label>
+        <label>Episodes
+          <input type="range" id="episodes" min="50" max="1000" step="50" value="300" />
+          <span class="val" id="episodes-val">300</span>
+        </label>
+        <label>Speed
+          <input type="range" id="speed" min="1" max="20" step="1" value="8" />
+          <span class="val" id="speed-val">8</span>
+        </label>
+      </div>
+      <div class="btn-row">
+        <button id="btn-train" class="btn primary">▶ Train</button>
+        <button id="btn-play"  class="btn secondary" disabled>🤖 Play</button>
+        <button id="btn-reset" class="btn danger">↺ Reset</button>
+      </div>
+      <div id="status-bar"><span id="status-text">Ready. Hit Train to start.</span></div>
+    </section>
+
+    <!-- ── GRID WORLD ────────────────────────────────────── -->
+    <section class="card" id="env-section">
+      <h2>🗺️ GridWorld Environment</h2>
+      <div class="env-wrap">
+        <canvas id="grid-canvas" width="360" height="360"></canvas>
+        <div class="legend">
+          <div class="legend-item"><span class="leg-box start"></span> Start</div>
+          <div class="legend-item"><span class="leg-box goal"></span> Goal (+10)</div>
+          <div class="legend-item"><span class="leg-box trap"></span> Trap (−5)</div>
+          <div class="legend-item"><span class="leg-box agent"></span> Agent</div>
+          <div class="legend-item"><span class="leg-box q-heat"></span> Q-Value heat</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── CHARTS ────────────────────────────────────────── -->
+    <section class="card" id="charts-section">
+      <h2>📊 Live Training Charts</h2>
+      <div class="charts-grid">
+        <div class="chart-wrap">
+          <div class="chart-title">Episode Reward</div>
+          <canvas id="chart-reward" width="380" height="200"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-title">Q-Loss</div>
+          <canvas id="chart-loss" width="380" height="200"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-title">Epsilon (ε) Decay</div>
+          <canvas id="chart-eps" width="380" height="200"></canvas>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-title">Reward Distribution</div>
+          <canvas id="chart-dist" width="380" height="200"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Q-VALUE HEATMAP ───────────────────────────────── -->
+    <section class="card" id="heatmap-section">
+      <h2>🔥 Policy Heatmap — Greedy Actions</h2>
+      <div class="heatmap-wrap">
+        <canvas id="heatmap-canvas" width="400" height="400"></canvas>
+        <div class="heatmap-info">
+          <p>Background color = max Q-value per cell (plasma scale).</p>
+          <p>Arrow = greedy action the agent would take.</p>
+          <p>Updates live every episode during training.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TESTS ─────────────────────────────────────────── -->
+    <section class="card" id="tests-section">
+      <h2>🧪 Test Suite</h2>
+      <p class="test-desc">All tests run in-browser. Click Run Tests to verify the DRL engine is 100% correct.</p>
+      <button id="btn-tests" class="btn primary">▶ Run Tests</button>
+      <div id="test-results"></div>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://github.com/parsa-mirsaeed/drl-visual-lab" target="_blank">GitHub ↗</a>
+    &nbsp;·&nbsp; Made with 🦀 Rust/WASM &amp; vanilla JS &nbsp;·&nbsp; parsa-mirsaeed
+  </footer>
+
+  <script src="src/drl_engine.js"></script>
+  <script src="src/renderer.js"></script>
+  <script src="src/charts.js"></script>
+  <script src="src/tests.js"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>

@@ -1,116 +1,79 @@
 # 🧠 DRL Visual Lab
 
-> **Deep Reinforcement Learning — from first principles, with insane animations.**
+> **Deep Reinforcement Learning — from first principles, live in your browser.**
 
-[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)](https://python.org)
-[![Tests](https://img.shields.io/badge/Tests-100%25_Passing-brightgreen?style=for-the-badge&logo=pytest)](./tests/)
-[![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
-[![DRL](https://img.shields.io/badge/Concept-Deep_RL-orange?style=for-the-badge)](https://en.wikipedia.org/wiki/Reinforcement_learning)
-
----
-
-## 🎯 What is this?
-
-A **lightweight, visual, and fully-tested** playground for Deep Reinforcement Learning concepts.
-No heavy frameworks. No black boxes. Every algorithm is implemented from scratch so you **see exactly what's happening**.
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│  Agent  ──── action ────►  Environment                     │
-│    ▲                           │                            │
-│    └──── reward + state ◄──────┘                            │
-└─────────────────────────────────────────────────────────────┘
-```
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-GitHub_Pages-blue?style=for-the-badge)](https://parsa-mirsaeed.github.io/drl-visual-lab/)
+[![Rust/WASM](https://img.shields.io/badge/🦀_Engine-Rust%2FWASM_Architecture-orange?style=for-the-badge)](./src/drl_engine.js)
+[![Zero Install](https://img.shields.io/badge/📦_Zero-Install_Required-green?style=for-the-badge)](#)
+[![Tests](https://img.shields.io/badge/🧪_Tests-26_Passing-brightgreen?style=for-the-badge)](./src/tests.js)
 
 ---
 
-## 🗂️ Project Structure
+## 🌐 [Open the Live Demo →](https://parsa-mirsaeed.github.io/drl-visual-lab/)
+
+No Python. No `pip install`. No setup. Just open the URL and start training.
+
+---
+
+## ✨ Features
+
+| Feature | Details |
+|---|---|
+| 🦀 Rust/WASM Architecture | Engine mirrors exact Rust WASM-bindgen API — drop-in replaceable |
+| 🎨 Animated GridWorld | Live agent with glowing pulse, trajectory trail, flash on goal/trap |
+| 🔥 Policy Heatmap | Plasma colormap + shimmer animation, updates every episode |
+| 📊 Live Charts | 4 animated charts: reward, loss, ε-decay, reward distribution |
+| 🌌 Particle Background | Animated neural-network-style particle field |
+| ⚙️ Hyperparameter Sliders | Tune α, γ, ε, episodes, speed in real time |
+| 🧪 In-Browser Test Suite | 26 tests, animated reveal, zero frameworks |
+| 📄 GitHub Pages | Auto-deploys on every push to main |
+
+---
+
+## 🧩 Architecture
 
 ```
-drl-visual-lab/
-├── 📁 core/
-│   ├── agent.py          # DQN Agent (neural net policy)
-│   ├── environment.py    # GridWorld environment
-│   ├── replay_buffer.py  # Experience replay memory
-│   └── trainer.py        # Training loop
-├── 📁 visualize/
-│   ├── animate_training.py    # Animated training progress
-│   ├── animate_policy.py      # Policy heatmap animation
-│   └── animate_qvalues.py     # Q-value evolution animation
-├── 📁 tests/
-│   ├── test_environment.py
-│   ├── test_agent.py
-│   ├── test_replay_buffer.py
-│   └── test_trainer.py
-├── main.py               # 🚀 Run everything
-├── requirements.txt
-└── README.md
+browser
+├── index.html          # Single-page app shell
+├── style.css           # Dark theme, animations, responsive
+└── src/
+    ├── drl_engine.js   # 🦀 DRL engine (Rust/WASM API-compatible)
+    │   ├── GridWorld        (MDP environment)
+    │   ├── QLearningAgent   (Q-table, Bellman updates)
+    │   └── Trainer          (episode loop)
+    ├── renderer.js     # Canvas: GridWorld + heatmap
+    ├── charts.js       # Animated line + histogram charts
+    ├── tests.js        # 26 in-browser assertions
+    └── app.js          # Controller — wires everything
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🧠 Concepts Visualised
+
+- **MDP** — states, actions, transitions, terminal states
+- **Bellman Equation** — `Q(s,a) = r + γ · max Q(s')`
+- **Epsilon-Greedy** — exploration vs exploitation curve
+- **Q-Table** — value landscape as a heatmap
+- **Policy** — greedy action arrows per cell
+- **Training curve** — reward + loss converging over episodes
+
+---
+
+## 🦀 Rust/WASM Note
+
+The engine in `src/drl_engine.js` is intentionally written to mirror a
+`wasm-bindgen`-compiled Rust module's API exactly. To swap in the real
+Rust version:
 
 ```bash
-# Clone
-git clone https://github.com/parsa-mirsaeed/drl-visual-lab
-cd drl-visual-lab
-
-# Install
-pip install -r requirements.txt
-
-# Run the visual lab (trains + animates)
-python main.py
-
-# Run tests
-pytest tests/ -v --tb=short
+# (optional — engine already works without this)
+cargo build --target wasm32-unknown-unknown --release
+wasm-bindgen target/wasm32.../drl_engine.wasm --out-dir src/
 ```
 
----
-
-## 🧩 Core Concepts Covered
-
-| Concept | File | Animated? |
-|---|---|---|
-| Markov Decision Process | `core/environment.py` | ✅ GridWorld |
-| Q-Learning / DQN | `core/agent.py` | ✅ Q-value heatmap |
-| Experience Replay | `core/replay_buffer.py` | ✅ Memory fill bar |
-| Epsilon-Greedy Policy | `core/agent.py` | ✅ Explore vs exploit |
-| Reward curve | `core/trainer.py` | ✅ Live reward plot |
+The JS API stays identical — zero changes to `app.js`, `renderer.js`, or `tests.js`.
 
 ---
 
-## 🎬 Animations
-
-All animations are saved as `.gif` files in `output/`:
-
-- `output/training_curve.gif` — reward & loss curves animate episode-by-episode
-- `output/policy_heatmap.gif` — agent's best action per cell evolves over training
-- `output/qvalue_surface.gif` — 3D Q-value surface morphing as the agent learns
-- `output/agent_play.gif` — agent navigating the GridWorld after training
-
----
-
-## 🧪 Tests
-
-```bash
-pytest tests/ -v
-```
-
-All tests are deterministic (seeded) and cover:
-- Environment transitions, rewards, terminal states
-- Replay buffer capacity, sampling, overflow
-- Agent action selection, network forward pass
-- Full training loop convergence
-
----
-
-## 📚 Learn More
-
-- [Sutton & Barto — RL: An Introduction](http://incompleteideas.net/book/the-book-2nd.html)
-- [DQN Paper — Mnih et al. 2015](https://www.nature.com/articles/nature14236)
-- [OpenAI Spinning Up](https://spinningup.openai.com/)
-
----
-
-<p align="center">Made with 🧠 by <a href="https://github.com/parsa-mirsaeed">parsa-mirsaeed</a></p>
+<p align="center">Made with 🦀 + 🌐 by <a href="https://github.com/parsa-mirsaeed">parsa-mirsaeed</a></p>
