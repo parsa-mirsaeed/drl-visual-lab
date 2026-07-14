@@ -4,98 +4,228 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🧠 DRL Visual Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="bg-canvas-wrap"><canvas id="bg-canvas"></canvas></div>
 
-  <header>
-    <div class="logo">🧠 <span>DRL</span> Visual Lab</div>
-    <div class="tagline">Deep Reinforcement Learning · from first principles · in your browser</div>
-    <div class="pills">
-      <span class="pill rust">🦀 Rust/WASM</span>
-      <span class="pill web">🌐 Zero Install</span>
-      <span class="pill pages">📄 GitHub Pages</span>
+  <!-- ── Aurora / mesh background ──────────────────────── -->
+  <div class="aurora-bg" aria-hidden="true">
+    <div class="aurora-orb orb-1"></div>
+    <div class="aurora-orb orb-2"></div>
+    <div class="aurora-orb orb-3"></div>
+    <div class="aurora-orb orb-4"></div>
+    <div class="grid-mesh"></div>
+  </div>
+  <div id="bg-canvas-wrap" aria-hidden="true"><canvas id="bg-canvas"></canvas></div>
+
+  <!-- ── Hero header ────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-eyebrow reveal">
+      <span class="eyebrow-dot"></span>
+      Deep Reinforcement Learning
+    </div>
+
+    <h1 class="hero-title reveal delay-1">
+      <span class="gradient-text">DRL</span>
+      <span class="hero-title-plain"> Visual Lab</span>
+      <span class="hero-cursor">|</span>
+    </h1>
+
+    <p class="hero-sub reveal delay-2">
+      From first principles — live in your browser.
+      <br />No Python. No pip install. Just open and train.
+    </p>
+
+    <div class="pills reveal delay-3">
+      <span class="pill pill-blue">🦀 Rust / WASM Engine</span>
+      <span class="pill pill-purple">🌐 Zero Install</span>
+      <span class="pill pill-green">🧪 26 Tests Passing</span>
+      <span class="pill pill-orange">📄 GitHub Pages</span>
+    </div>
+
+    <div class="hero-cta reveal delay-4">
+      <button id="hero-train-btn" class="cta-btn cta-primary">
+        <span class="cta-icon">▶</span> Start Training
+      </button>
+      <a href="https://github.com/parsa-mirsaeed/drl-visual-lab" target="_blank" class="cta-btn cta-ghost">
+        <span class="cta-icon">⭐</span> Star on GitHub
+      </a>
+    </div>
+
+    <!-- Floating stat cards -->
+    <div class="hero-stats reveal delay-5">
+      <div class="stat-card">
+        <div class="stat-num" id="stat-episodes">0</div>
+        <div class="stat-label">Episodes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-reward">—</div>
+        <div class="stat-label">Best Reward</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-epsilon">1.00</div>
+        <div class="stat-label">Epsilon (ε)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="stat-tests">26</div>
+        <div class="stat-label">Tests ✓</div>
+      </div>
     </div>
   </header>
 
   <main>
-    <!-- ── CONCEPT EXPLAINER ─────────────────────────────── -->
-    <section class="card" id="concept">
-      <h2>What is Deep Reinforcement Learning?</h2>
+
+    <!-- ── Concept explainer ─────────────────────────────── -->
+    <section class="glass-card reveal" id="concept">
+      <div class="card-glow card-glow-blue"></div>
+      <div class="section-header">
+        <span class="section-icon">🧠</span>
+        <h2>What is Deep Reinforcement Learning?</h2>
+      </div>
+
       <div class="concept-grid">
-        <div class="concept-box">
-          <div class="concept-icon">🤖</div>
+        <div class="concept-box" style="--delay:0s">
+          <div class="concept-icon-wrap icon-blue">🤖</div>
           <h3>Agent</h3>
           <p>Makes decisions based on observations from the environment.</p>
         </div>
-        <div class="concept-arrow animate-pulse">⟶</div>
-        <div class="concept-box">
-          <div class="concept-icon">🌍</div>
+        <div class="concept-flow-arrow">
+          <div class="flow-line"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-head">›</div>
+        </div>
+        <div class="concept-box" style="--delay:0.1s">
+          <div class="concept-icon-wrap icon-green">🌍</div>
           <h3>Environment</h3>
           <p>Responds with a new state and a reward signal.</p>
         </div>
-        <div class="concept-arrow animate-pulse">⟶</div>
-        <div class="concept-box">
-          <div class="concept-icon">💎</div>
-          <h3>Reward</h3>
-          <p>Scalar feedback that guides the agent toward the goal.</p>
+        <div class="concept-flow-arrow">
+          <div class="flow-line"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-head">›</div>
         </div>
-        <div class="concept-arrow animate-pulse">⟶</div>
-        <div class="concept-box">
-          <div class="concept-icon">📈</div>
+        <div class="concept-box" style="--delay:0.2s">
+          <div class="concept-icon-wrap icon-orange">💎</div>
+          <h3>Reward</h3>
+          <p>Scalar feedback guiding the agent toward the goal.</p>
+        </div>
+        <div class="concept-flow-arrow">
+          <div class="flow-line"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-dot"></div>
+          <div class="flow-head">›</div>
+        </div>
+        <div class="concept-box" style="--delay:0.3s">
+          <div class="concept-icon-wrap icon-purple">📈</div>
           <h3>Policy</h3>
-          <p>Learned mapping from states to actions, improved over episodes.</p>
+          <p>Learned mapping from states to actions, improved every episode.</p>
         </div>
       </div>
-      <div class="bellman">
-        <span class="eq-label">Bellman Equation</span>
-        <span class="eq">Q(s,a) = r + γ · max<sub>a'</sub> Q(s',a')</span>
+
+      <div class="bellman-card">
+        <span class="bellman-label">Bellman Equation</span>
+        <span class="bellman-eq">Q(s,a) = r + γ · max<sub>a′</sub> Q(s′,a′)</span>
+        <span class="bellman-shimmer"></span>
       </div>
     </section>
 
-    <!-- ── CONTROLS ──────────────────────────────────────── -->
-    <section class="card" id="controls">
-      <h2>⚙️ Hyperparameters</h2>
+    <!-- ── Controls ──────────────────────────────────────── -->
+    <section class="glass-card reveal" id="controls">
+      <div class="card-glow card-glow-purple"></div>
+      <div class="section-header">
+        <span class="section-icon">⚙️</span>
+        <h2>Hyperparameters</h2>
+      </div>
       <div class="controls-grid">
-        <label>Learning Rate α
-          <input type="range" id="lr" min="0.001" max="0.5" step="0.001" value="0.1" />
+        <label class="param-label">
+          <span class="param-name">Learning Rate <em>α</em></span>
+          <div class="slider-wrap">
+            <input type="range" id="lr" min="0.001" max="0.5" step="0.001" value="0.1" />
+            <span class="slider-track-fill" id="lr-fill"></span>
+          </div>
           <span class="val" id="lr-val">0.100</span>
         </label>
-        <label>Discount γ
-          <input type="range" id="gamma" min="0.5" max="0.999" step="0.001" value="0.95" />
+        <label class="param-label">
+          <span class="param-name">Discount <em>γ</em></span>
+          <div class="slider-wrap">
+            <input type="range" id="gamma" min="0.5" max="0.999" step="0.001" value="0.95" />
+          </div>
           <span class="val" id="gamma-val">0.950</span>
         </label>
-        <label>ε Start
-          <input type="range" id="eps-start" min="0.1" max="1.0" step="0.01" value="1.0" />
+        <label class="param-label">
+          <span class="param-name">ε Start</span>
+          <div class="slider-wrap">
+            <input type="range" id="eps-start" min="0.1" max="1.0" step="0.01" value="1.0" />
+          </div>
           <span class="val" id="eps-start-val">1.00</span>
         </label>
-        <label>ε Decay
-          <input type="range" id="eps-decay" min="0.9" max="0.999" step="0.001" value="0.97" />
+        <label class="param-label">
+          <span class="param-name">ε Decay</span>
+          <div class="slider-wrap">
+            <input type="range" id="eps-decay" min="0.9" max="0.999" step="0.001" value="0.97" />
+          </div>
           <span class="val" id="eps-decay-val">0.970</span>
         </label>
-        <label>Episodes
-          <input type="range" id="episodes" min="50" max="1000" step="50" value="300" />
+        <label class="param-label">
+          <span class="param-name">Episodes</span>
+          <div class="slider-wrap">
+            <input type="range" id="episodes" min="50" max="1000" step="50" value="300" />
+          </div>
           <span class="val" id="episodes-val">300</span>
         </label>
-        <label>Speed
-          <input type="range" id="speed" min="1" max="20" step="1" value="8" />
+        <label class="param-label">
+          <span class="param-name">Speed</span>
+          <div class="slider-wrap">
+            <input type="range" id="speed" min="1" max="20" step="1" value="8" />
+          </div>
           <span class="val" id="speed-val">8</span>
         </label>
       </div>
+
       <div class="btn-row">
-        <button id="btn-train" class="btn primary">▶ Train</button>
-        <button id="btn-play"  class="btn secondary" disabled>🤖 Play</button>
-        <button id="btn-reset" class="btn danger">↺ Reset</button>
+        <button id="btn-train" class="btn btn-primary">
+          <span class="btn-ripple"></span>
+          <span class="btn-icon">▶</span> Train
+        </button>
+        <button id="btn-play" class="btn btn-secondary" disabled>
+          <span class="btn-ripple"></span>
+          <span class="btn-icon">🤖</span> Play
+        </button>
+        <button id="btn-reset" class="btn btn-danger">
+          <span class="btn-ripple"></span>
+          <span class="btn-icon">↺</span> Reset
+        </button>
       </div>
-      <div id="status-bar"><span id="status-text">Ready. Hit Train to start.</span></div>
+
+      <div id="status-bar">
+        <span class="status-dot"></span>
+        <span id="status-text">Ready — hit Train to begin.</span>
+      </div>
     </section>
 
-    <!-- ── GRID WORLD ────────────────────────────────────── -->
-    <section class="card" id="env-section">
-      <h2>🗺️ GridWorld Environment</h2>
+    <!-- ── GridWorld ─────────────────────────────────────── -->
+    <section class="glass-card reveal" id="env-section">
+      <div class="card-glow card-glow-green"></div>
+      <div class="section-header">
+        <span class="section-icon">🗺️</span>
+        <h2>GridWorld Environment</h2>
+      </div>
       <div class="env-wrap">
-        <canvas id="grid-canvas" width="360" height="360"></canvas>
+        <div class="canvas-frame">
+          <canvas id="grid-canvas" width="360" height="360"></canvas>
+          <div class="canvas-corner tl"></div>
+          <div class="canvas-corner tr"></div>
+          <div class="canvas-corner bl"></div>
+          <div class="canvas-corner br"></div>
+        </div>
         <div class="legend">
           <div class="legend-item"><span class="leg-box start"></span> Start</div>
           <div class="legend-item"><span class="leg-box goal"></span> Goal (+10)</div>
@@ -106,56 +236,167 @@
       </div>
     </section>
 
-    <!-- ── CHARTS ────────────────────────────────────────── -->
-    <section class="card" id="charts-section">
-      <h2>📊 Live Training Charts</h2>
+    <!-- ── Live Charts ───────────────────────────────────── -->
+    <section class="glass-card reveal" id="charts-section">
+      <div class="card-glow card-glow-orange"></div>
+      <div class="section-header">
+        <span class="section-icon">📊</span>
+        <h2>Live Training Charts</h2>
+      </div>
       <div class="charts-grid">
         <div class="chart-wrap">
-          <div class="chart-title">Episode Reward</div>
+          <div class="chart-title"><span class="chart-dot dot-blue"></span>Episode Reward</div>
           <canvas id="chart-reward" width="380" height="200"></canvas>
         </div>
         <div class="chart-wrap">
-          <div class="chart-title">Q-Loss</div>
+          <div class="chart-title"><span class="chart-dot dot-red"></span>Q-Loss</div>
           <canvas id="chart-loss" width="380" height="200"></canvas>
         </div>
         <div class="chart-wrap">
-          <div class="chart-title">Epsilon (ε) Decay</div>
+          <div class="chart-title"><span class="chart-dot dot-purple"></span>Epsilon (ε) Decay</div>
           <canvas id="chart-eps" width="380" height="200"></canvas>
         </div>
         <div class="chart-wrap">
-          <div class="chart-title">Reward Distribution</div>
+          <div class="chart-title"><span class="chart-dot dot-orange"></span>Reward Distribution</div>
           <canvas id="chart-dist" width="380" height="200"></canvas>
         </div>
       </div>
     </section>
 
-    <!-- ── Q-VALUE HEATMAP ───────────────────────────────── -->
-    <section class="card" id="heatmap-section">
-      <h2>🔥 Policy Heatmap — Greedy Actions</h2>
+    <!-- ── Heatmap ───────────────────────────────────────── -->
+    <section class="glass-card reveal" id="heatmap-section">
+      <div class="card-glow card-glow-purple"></div>
+      <div class="section-header">
+        <span class="section-icon">🔥</span>
+        <h2>Policy Heatmap — Greedy Actions</h2>
+      </div>
       <div class="heatmap-wrap">
-        <canvas id="heatmap-canvas" width="400" height="400"></canvas>
+        <div class="canvas-frame">
+          <canvas id="heatmap-canvas" width="400" height="400"></canvas>
+          <div class="canvas-corner tl"></div>
+          <div class="canvas-corner tr"></div>
+          <div class="canvas-corner bl"></div>
+          <div class="canvas-corner br"></div>
+        </div>
         <div class="heatmap-info">
-          <p>Background color = max Q-value per cell (plasma scale).</p>
-          <p>Arrow = greedy action the agent would take.</p>
-          <p>Updates live every episode during training.</p>
+          <div class="info-item">
+            <span class="info-icon">🎨</span>
+            Background = max Q-value per cell (plasma colormap)
+          </div>
+          <div class="info-item">
+            <span class="info-icon">→</span>
+            Arrow = greedy action the agent would take
+          </div>
+          <div class="info-item">
+            <span class="info-icon">⚡</span>
+            Updates live every episode during training
+          </div>
+          <div class="heatmap-scale">
+            <span class="scale-label">Low Q</span>
+            <div class="scale-bar"></div>
+            <span class="scale-label">High Q</span>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ── TESTS ─────────────────────────────────────────── -->
-    <section class="card" id="tests-section">
-      <h2>🧪 Test Suite</h2>
-      <p class="test-desc">All tests run in-browser. Click Run Tests to verify the DRL engine is 100% correct.</p>
-      <button id="btn-tests" class="btn primary">▶ Run Tests</button>
+    <!-- ── Tests ─────────────────────────────────────────── -->
+    <section class="glass-card reveal" id="tests-section">
+      <div class="card-glow card-glow-green"></div>
+      <div class="section-header">
+        <span class="section-icon">🧪</span>
+        <h2>Test Suite</h2>
+      </div>
+      <p class="test-desc">All 26 tests run in-browser — zero frameworks, pure JS assertions.</p>
+      <button id="btn-tests" class="btn btn-primary">
+        <span class="btn-ripple"></span>
+        <span class="btn-icon">▶</span> Run All Tests
+      </button>
       <div id="test-results"></div>
     </section>
+
   </main>
 
   <footer>
-    <a href="https://github.com/parsa-mirsaeed/drl-visual-lab" target="_blank">GitHub ↗</a>
-    &nbsp;·&nbsp; Made with 🦀 Rust/WASM &amp; vanilla JS &nbsp;·&nbsp; parsa-mirsaeed
+    <div class="footer-inner">
+      <div class="footer-brand">🧠 DRL Visual Lab</div>
+      <div class="footer-links">
+        <a href="https://github.com/parsa-mirsaeed/drl-visual-lab" target="_blank">GitHub ↗</a>
+        <span>·</span>
+        <span>Made with 🦀 Rust/WASM & vanilla JS</span>
+        <span>·</span>
+        <a href="https://github.com/parsa-mirsaeed" target="_blank">parsa-mirsaeed</a>
+      </div>
+    </div>
   </footer>
 
   <script type="module" src="src/app.js"></script>
+
+  <script>
+    /* ── Scroll reveal ── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('revealed');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ── Btn ripple ── */
+    document.querySelectorAll('.btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        const r = this.querySelector('.btn-ripple');
+        if (!r) return;
+        r.style.left = (e.offsetX - 20) + 'px';
+        r.style.top  = (e.offsetY - 20) + 'px';
+        r.classList.remove('ripple-go');
+        void r.offsetWidth;
+        r.classList.add('ripple-go');
+      });
+    });
+
+    /* ── Hero train shortcut ── */
+    document.getElementById('hero-train-btn').addEventListener('click', () => {
+      document.getElementById('btn-train')?.click();
+      document.getElementById('controls')?.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    /* ── Counter animation for stats ── */
+    function animateCounter(el, target, duration = 800, decimals = 0) {
+      const start = performance.now();
+      const from = parseFloat(el.textContent) || 0;
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const val = from + (target - from) * (1 - Math.pow(1 - p, 3));
+        el.textContent = decimals ? val.toFixed(decimals) : Math.round(val);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    /* Expose for app.js to call */
+    window.updateStats = function({ episodes, reward, epsilon }) {
+      if (episodes !== undefined) animateCounter(document.getElementById('stat-episodes'), episodes, 400);
+      if (reward   !== undefined) document.getElementById('stat-reward').textContent = reward.toFixed(1);
+      if (epsilon  !== undefined) document.getElementById('stat-epsilon').textContent = epsilon.toFixed(2);
+    };
+
+    /* ── Typewriter effect on hero title ── */
+    const titlePlain = document.querySelector('.hero-title-plain');
+    const cursor     = document.querySelector('.hero-cursor');
+    const text       = ' Visual Lab';
+    let i = 0;
+    titlePlain.textContent = '';
+    setTimeout(function type() {
+      if (i < text.length) {
+        titlePlain.textContent += text[i++];
+        setTimeout(type, 60);
+      } else {
+        cursor.style.animation = 'blink 1s step-end infinite';
+      }
+    }, 800);
+  </script>
 </body>
 </html>
