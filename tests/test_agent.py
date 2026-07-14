@@ -68,10 +68,13 @@ class TestActionSelection:
 
 class TestUpdate:
     def _make_batch(self, n=32):
-        states = np.eye(STATE_DIM, dtype=np.float32)[:n]
+        # Use tile so we always get exactly n rows, regardless of STATE_DIM
+        base = np.eye(STATE_DIM, dtype=np.float32)
+        repeats = (n // STATE_DIM) + 1
+        states = np.tile(base, (repeats, 1))[:n]
         actions = np.zeros(n, dtype=np.int64)
         rewards = np.random.randn(n).astype(np.float32)
-        next_states = np.eye(STATE_DIM, dtype=np.float32)[:n]
+        next_states = np.tile(base, (repeats, 1))[:n]
         dones = np.zeros(n, dtype=np.float32)
         return states, actions, rewards, next_states, dones
 
